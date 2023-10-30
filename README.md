@@ -1,2 +1,3 @@
-Можете пожалуйста подождать до завтра, еще не успел доделать
-Спасибо за понимание!
+React.-Components 
+Deploy: https://voluble-pithivier-5d2921.netlify.app/
+Thanks to everyone who waited
