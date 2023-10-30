@@ -7,7 +7,7 @@ interface SearchResult {
   skin_color: string;
 }
 
-interface SearchAppState  ,. {
+interface SearchAppState {
   searchTerm: string;
   searchResults: SearchResult[];
   error: string | null;
