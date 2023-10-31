@@ -1,5 +1,4 @@
 import { Component, ChangeEvent } from 'react';
-
 interface SearchResult {
   name: string;
   gender: string;
@@ -64,7 +63,7 @@ class SearchApp extends Component<object, SearchAppState> {
   };
 
   throwError = () => {
-    this.setState({ error: 'An error occurred!' });
+    this.setState({ error: 'Error has occurred!' });
   };
 
   render() {
@@ -81,7 +80,7 @@ class SearchApp extends Component<object, SearchAppState> {
             }
           />
           <button onClick={this.handleSearch}>Search</button>
-          <button onClick={this.throwError}>Generate Error</button>
+          <button onClick={this.throwError}>Throw Error</button>
         </div>
         <div className="search-results">
           {isLoading ? (
