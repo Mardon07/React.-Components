@@ -1,8 +1,8 @@
-// SearchApp.tsx
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../Components/SearchBar';
-import SearchResults from '../Components//SearchResults';
-import { getSearchResults } from '../api/request'; // Функция для выполнения запроса к API
+import SearchResults from '../Components/SearchResults';
+import Pagination from '../Components/Pagination';
+import { getSearchResults } from '../api/request';
 
 export interface SearchResult {
   name: string;
@@ -16,22 +16,25 @@ const SearchApp: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
     const savedQuery = localStorage.getItem('searchQuery');
     if (savedQuery) {
       setSearchTerm(savedQuery);
-      performAPICall(savedQuery);
-    } else {
-      performAPICall('');
     }
   }, []);
 
-  const performAPICall = async (term: string) => {
+  useEffect(() => {
+    performAPICall(searchTerm, currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  const performAPICall = async (term: string, page: number) => {
     setIsLoading(true);
     try {
-      const data = await getSearchResults(term);
-      setSearchResults(data);
+      const { results } = await getSearchResults(term, page);
+      setSearchResults(results);
       setError(null);
     } catch (error) {
       setError('An error occurred');
@@ -42,8 +45,13 @@ const SearchApp: React.FC = () => {
   };
 
   const handleSearch = () => {
-    performAPICall(searchTerm.trim());
+    setCurrentPage(1);
+    performAPICall(searchTerm, 1);
     localStorage.setItem('searchQuery', searchTerm);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   const throwError = () => {
@@ -52,18 +60,19 @@ const SearchApp: React.FC = () => {
 
   return (
     <div className="search-app">
+      <h1>Star Wars Search</h1>
       <SearchBar
         searchTerm={searchTerm}
+        onThrowError={throwError}
         onSearchChange={(value: string) => setSearchTerm(value)}
         onSearch={handleSearch}
-        onThrowError={throwError}
       />
       <SearchResults
-        searchTerm={searchTerm}
         searchResults={searchResults}
         error={error}
         isLoading={isLoading}
       />
+      <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
     </div>
   );
 };
