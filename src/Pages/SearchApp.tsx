@@ -1,110 +1,71 @@
-import { Component, ChangeEvent } from 'react';
-interface SearchResult {
+// SearchApp.tsx
+import React, { useState, useEffect } from 'react';
+import SearchBar from '../Components/SearchBar';
+import SearchResults from '../Components//SearchResults';
+import { getSearchResults } from '../api/request'; // Функция для выполнения запроса к API
+
+export interface SearchResult {
   name: string;
   gender: string;
   height: string;
   skin_color: string;
 }
 
-interface SearchAppState {
-  searchTerm: string;
-  searchResults: SearchResult[];
-  error: string | null;
-  isLoading: boolean;
-}
+const SearchApp: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-class SearchApp extends Component<object, SearchAppState> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      searchTerm: '',
-      searchResults: [],
-      error: null,
-      isLoading: false,
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const savedQuery = localStorage.getItem('searchQuery');
     if (savedQuery) {
-      this.setState({ searchTerm: savedQuery });
-      this.performAPICall(savedQuery);
+      setSearchTerm(savedQuery);
+      performAPICall(savedQuery);
     } else {
-      this.performAPICall('');
+      performAPICall('');
     }
-  }
+  }, []);
 
-  performAPICall = async (searchTerm: string) => {
-    this.setState({ isLoading: true });
+  const performAPICall = async (term: string) => {
+    setIsLoading(true);
     try {
-      let url = 'https://swapi.dev/api/people/';
-      if (searchTerm !== '') {
-        url += `?search=${searchTerm}`;
-      }
-
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
-      const data = await response.json();
-      this.setState({ searchResults: data.results, error: null });
+      const data = await getSearchResults(term);
+      setSearchResults(data);
+      setError(null);
     } catch (error) {
-      this.setState({ error: 'An error occurred', searchResults: [] });
+      setError('An error occurred');
+      setSearchResults([]);
     } finally {
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
   };
 
-  handleSearch = () => {
-    const { searchTerm } = this.state;
-    this.performAPICall(searchTerm.trim());
+  const handleSearch = () => {
+    performAPICall(searchTerm.trim());
     localStorage.setItem('searchQuery', searchTerm);
   };
 
-  throwError = () => {
-    this.setState({ error: 'Error has occurred!' });
+  const throwError = () => {
+    setError('Error has occurred!');
   };
 
-  render() {
-    const { searchTerm, searchResults, error, isLoading } = this.state;
-
-    return (
-      <div className="search-app">
-        <div className="search-bar">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              this.setState({ searchTerm: e.target.value })
-            }
-          />
-          <button onClick={this.handleSearch}>Search</button>
-          <button onClick={this.throwError}>Throw Error</button>
-        </div>
-        <div className="search-results">
-          {isLoading ? (
-            <div className="loader"></div>
-          ) : error ? (
-            <div>Error: {error}</div>
-          ) : (
-            <ul>
-              {searchResults.map((result: SearchResult, index: number) => (
-                <li key={index} className="search-result">
-                  <div>
-                    <strong>{result.name}</strong>
-                  </div>
-                  <div>Gender: {result.gender}</div>
-                  <div>Height: {result.height}</div>
-                  <div>Skin Color: {result.skin_color}</div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="search-app">
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={(value: string) => setSearchTerm(value)}
+        onSearch={handleSearch}
+        onThrowError={throwError}
+      />
+      <SearchResults
+        searchTerm={searchTerm}
+        searchResults={searchResults}
+        error={error}
+        isLoading={isLoading}
+      />
+    </div>
+  );
+};
 
 export default SearchApp;
