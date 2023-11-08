@@ -4,15 +4,16 @@ import SearchResults from '../Components/SearchResults';
 import Pagination from '../Components/Pagination';
 import { getSearchResults } from '../api/request';
 import { SearchResult } from '../types/types';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 const SearchApp: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(+id!);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 
   useEffect(() => {
@@ -20,8 +21,6 @@ const SearchApp: React.FC = () => {
     if (savedQuery) {
       setSearchTerm(savedQuery);
     }
-
-     
   }, []);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const SearchApp: React.FC = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    performAPICall(searchTerm, 1);
+    performAPICall(searchTerm, currentPage);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsPerPage]);
@@ -41,18 +40,18 @@ const SearchApp: React.FC = () => {
 
     try {
       let results: SearchResult[] = [];
-      let currentPage: number = page;
+      let pageNumber: number = page;
 
       while (results.length < itemsPerPage) {
         const { results: responseResults, nextPage: responseNextPage } =
-          await getSearchResults(term, currentPage, itemsPerPage);
+          await getSearchResults(term, pageNumber);
 
         if (!responseResults || responseResults.length === 0) {
           break;
         }
 
         results = [...results, ...responseResults];
-        currentPage++;
+        pageNumber++;
 
         if (!responseNextPage || results.length >= itemsPerPage) {
           break;
@@ -70,8 +69,7 @@ const SearchApp: React.FC = () => {
   };
 
   const handleSearch = () => {
-    setCurrentPage(1);
-    performAPICall(searchTerm, 1);
+    performAPICall(searchTerm, currentPage);
     localStorage.setItem('searchQuery', searchTerm);
   };
 
@@ -82,7 +80,6 @@ const SearchApp: React.FC = () => {
 
   const handleItemsPerPageChange = (newItemsPerPage: number) => {
     setItemsPerPage(newItemsPerPage);
-    setCurrentPage(1);
   };
 
   const throwError = () => {

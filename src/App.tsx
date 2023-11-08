@@ -6,12 +6,13 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import Detail from './Pages/Detail';
+import RootLayout from './Pages/RootLayout';
 import SearchApp from './Pages/SearchApp';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<SearchApp />}>
-      <Route path="page/:id">
+    <Route path="/" element={<RootLayout />}>
+      <Route path="page/:id" element={<SearchApp />}>
         <Route path="detail/:id" element={<Detail />} />
       </Route>
     </Route>

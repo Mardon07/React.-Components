@@ -2,10 +2,12 @@ import { Outlet } from 'react-router-dom';
 
 const RootLayout = () => {
   return (
-    <div className="search-app">
-      <h1>Star Wars Search</h1>
+    <div>
+      <a href="/page/1">
+        <h1>Star Wars Search</h1>
+      </a>
 
-      <main className="main-data-container">
+      <main>
         <Outlet />
       </main>
     </div>
