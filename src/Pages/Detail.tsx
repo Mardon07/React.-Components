@@ -6,6 +6,7 @@ import { SearchResult } from '../types/types';
 const Detail: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
@@ -28,7 +29,8 @@ const Detail: React.FC = () => {
   }, [handleItemClick]);
   const closeDetail = () => {
     setSelectedResult(null);
-    navigate('/');
+
+    navigate(-1);
   };
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

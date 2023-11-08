@@ -11,9 +11,9 @@ import SearchApp from './Pages/SearchApp';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route path="" element={<SearchApp />}>
-        <Route path="detail/:id" element={<Detail />}></Route>
+    <Route path="/page" element={<RootLayout />}>
+      <Route path=":id" element={<SearchApp />}>
+        <Route path="detail/:id" element={<Detail />} />
       </Route>
     </Route>
   )

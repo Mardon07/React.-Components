@@ -14,6 +14,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   isLoading,
 }) => {
   const navigate = useNavigate();
+
   const handleNavigate = (url: string) => {
     navigate(`detail/${url.match(/[0-9]+/g)?.join('')}`);
   };

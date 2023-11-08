@@ -18,7 +18,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <input
         type="text"
         value={searchTerm}
-        onChange={(e) => onSearchChange(e.target.value)}
+        onChange={(e) => onSearchChange(e.target.value.trim())}
       />
       <button onClick={onSearch}>Search</button>
       <button onClick={onThrowError}>Throw Error</button>
