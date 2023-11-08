@@ -21,7 +21,7 @@ const SearchApp: React.FC = () => {
       setSearchTerm(savedQuery);
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   useEffect(() => {
