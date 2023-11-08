@@ -1,15 +1,26 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from 'react-router-dom';
+import Detail from './Pages/Detail';
+import RootLayout from './Pages/RootLayout';
 import SearchApp from './Pages/SearchApp';
 
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route path="" element={<SearchApp />}>
+        <Route path="detail/:id" element={<Detail />}></Route>
+      </Route>
+    </Route>
+  )
+);
+
 const App: React.FC = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SearchApp />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

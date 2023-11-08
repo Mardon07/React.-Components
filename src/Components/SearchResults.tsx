@@ -1,29 +1,21 @@
-// SearchResults.tsx
-import React, { useState } from 'react';
-import Detail from '../Pages/Detail';
-import { SearchResult } from '../Pages/SearchApp';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SearchResult } from '../types/types';
 
 interface SearchResultsProps {
   searchResults: SearchResult[];
   error: string | null;
   isLoading: boolean;
-  //   onItemClick: (result: SearchResult) => void; // Добавим свойство для обработки клика
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   searchResults,
   error,
   isLoading,
-  //   onItemClick, // Добавим получение свойства
 }) => {
-  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
-    null
-  );
-  const handleItemClick = (result: SearchResult) => {
-    setSelectedResult(result);
-  };
-  const closeDetail = () => {
-    setSelectedResult(null);
+  const navigate = useNavigate();
+  const handleNavigate = (url: string) => {
+    navigate(`detail/${url.match(/[0-9]+/g)?.join('')}`);
   };
   return (
     <div className="search-results">
@@ -43,17 +35,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 <div>Gender: {result.gender}</div>
                 <div>Height: {result.height}</div>
                 <div>Skin Color: {result.skin_color}</div>
-                <button onClick={() => handleItemClick(result)}>Details</button>
+                <button onClick={() => handleNavigate(result.url)}>
+                  Details
+                </button>
               </div>
-              <div>
-                {result.name === selectedResult?.name && (
-                  <>
-                    {selectedResult && (
-                      <Detail result={selectedResult} onClose={closeDetail} />
-                    )}
-                  </>
-                )}
-              </div>
+              <div></div>
             </li>
           ))}
         </ul>

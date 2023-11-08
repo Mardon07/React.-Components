@@ -1,5 +1,4 @@
-import { SearchResult } from '../Pages/SearchApp';
-import { Detail } from '../Pages/Detail';
+import { SearchResult } from '../types/types';
 
 export const getSearchResults = async (
   searchTerm: string,
@@ -19,7 +18,7 @@ export const getSearchResults = async (
   }
 };
 
-export const getDetails = async (id: string): Promise<Detail> => {
+export const getDetails = async (id: string): Promise<SearchResult> => {
   try {
     const response = await fetch(`https://swapi.dev/api/people/${id}`);
     if (!response.ok) {

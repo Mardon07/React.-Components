@@ -3,13 +3,8 @@ import SearchBar from '../Components/SearchBar';
 import SearchResults from '../Components/SearchResults';
 import Pagination from '../Components/Pagination';
 import { getSearchResults } from '../api/request';
-
-export interface SearchResult {
-  name: string;
-  gender: string;
-  height: string;
-  skin_color: string;
-}
+import { SearchResult } from '../types/types';
+import { Outlet } from 'react-router-dom';
 
 const SearchApp: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,7 +22,6 @@ const SearchApp: React.FC = () => {
 
   useEffect(() => {
     performAPICall(searchTerm, currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const performAPICall = async (term: string, page: number) => {
@@ -73,6 +67,9 @@ const SearchApp: React.FC = () => {
         isLoading={isLoading}
       />
       <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
+      <main className="main-data-container">
+        <Outlet />
+      </main>
     </div>
   );
 };

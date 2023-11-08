@@ -1,29 +1,65 @@
-import React from 'react';
-import { SearchResult } from '../Pages/SearchApp';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getDetails } from '../api/request';
+import { SearchResult } from '../types/types';
 
-export interface Detail {
-  name: string;
-  height: string;
-  mass: string;
-  hair_color: string;
-  skin_color: string;
-  eye_color: string;
-}
+const Detail: React.FC = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
+    null
+  );
 
-interface DetailProps {
-  result: SearchResult;
-  onClose: () => void;
-}
+  const handleItemClick = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await getDetails(id!);
+      setSelectedResult(response);
+    } catch (error) {
+      setError('An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
+  useEffect(() => {
+    handleItemClick();
+  }, [handleItemClick]);
+  const closeDetail = () => {
+    setSelectedResult(null);
+    navigate('/');
+  };
 
-const Detail: React.FC<DetailProps> = ({ result, onClose }) => {
+  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const eventTarget = event.target as HTMLElement;
+
+    if (eventTarget.className === 'detail-container-block') {
+      closeDetail();
+    }
+  };
   return (
-    <div className="detail-container">
-      <h2>{result.name}</h2>
-      <p>Gender: {result.gender}</p>
-      <p>Height: {result.height}</p>
-      <p>Skin Color: {result.skin_color}</p>
-      <button onClick={onClose}>Close</button>
-    </div>
+    <>
+      <div onClick={(e) => handleClick(e)} className="detail-container-block">
+        <div className="detail-container">
+          {isLoading ? (
+            <div className="loader"></div>
+          ) : error ? (
+            <div className="error-message">Error: {error}</div>
+          ) : (
+            selectedResult && (
+              <div>
+                <h2>{selectedResult?.name}</h2>
+                <p>Gender: {selectedResult?.gender}</p>
+                <p>Height: {selectedResult?.height}</p>
+                <p>Skin Color: {selectedResult?.skin_color}</p>
+                <button onClick={closeDetail}>Close</button>
+              </div>
+            )
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -3,6 +3,10 @@
   margin: 0;
   box-sizing: border-box;
 }
+body {
+  position: relative;
+  width: 100%;
+}
 
 .search-app {
   font-family: Arial, sans-serif;
@@ -12,45 +16,38 @@
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
+  width: 50%;
+  position: relative;
+  z-index: 2;
 }
 
 .search-bar {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
 
 .search-bar input {
-  padding: 8px;
-  margin-right: 10px;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   flex: 1;
-}
-
-.search-bar button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #3498db;
-  color: white;
-  cursor: pointer;
 }
 
 .search-bar button:hover {
   background-color: #2c82c9;
 }
 
-.search-results {
-  list-style: none;
-  padding: 0;
-}
-
-.search-result {
-  background-color: #fff;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  padding: 10px;
+.search-bar button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
 }
 
 .loader {
@@ -114,28 +111,11 @@
 }
 
 /* SearchBar.css */
-.search-bar {
-  margin-bottom: 1rem;
-}
-
-.search-bar input {
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  font-size: 1rem;
-}
-
-.search-bar button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #28a745;
-  color: #fff;
-}
 
 /* SearchResults.css */
 .search-results {
+  list-style: none;
+  padding: 0;
   margin-top: 1rem;
 }
 
@@ -150,6 +130,7 @@
 }
 
 .search-result {
+  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 1rem;
@@ -173,8 +154,18 @@
   background-color: #007bff;
   color: #fff;
 }
+.detail-container-block {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
 
 .detail-container {
+  position: absolute;
+  right: 10%;
+  top: 30vh;
+  width: 30%;
+  display: block;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 1rem;
@@ -194,4 +185,10 @@
   border-radius: 5px;
   background-color: #dc3545;
   color: #fff;
+}
+.main-data-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: block;
 }
