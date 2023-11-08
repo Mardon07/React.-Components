@@ -20,6 +20,8 @@ const SearchApp: React.FC = () => {
     if (savedQuery) {
       setSearchTerm(savedQuery);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const SearchApp: React.FC = () => {
 
   const performAPICall = async (term: string, page: number) => {
     setIsLoading(true);
-    navigate(`page/${currentPage}`);
+
     try {
       let results: SearchResult[] = [];
       let currentPage: number = page;
@@ -74,6 +76,7 @@ const SearchApp: React.FC = () => {
   };
 
   const handlePageChange = (page: number) => {
+    navigate(`/page/${page}`);
     setCurrentPage(page);
   };
 
