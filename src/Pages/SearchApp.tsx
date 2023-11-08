@@ -22,6 +22,7 @@ const SearchApp: React.FC = () => {
 
   useEffect(() => {
     performAPICall(searchTerm, currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const performAPICall = async (term: string, page: number) => {
