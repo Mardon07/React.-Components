@@ -5,6 +5,8 @@ import Pagination from '../Components/Pagination';
 import { getSearchResults } from '../api/request';
 import { SearchResult } from '../types/types';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import ResultContext from '../Contex api/ResultContext';
+import SearchTermContext from '../Contex api/SearchTermContext';
 
 const SearchApp: React.FC = () => {
   const navigate = useNavigate();
@@ -89,17 +91,16 @@ const SearchApp: React.FC = () => {
   return (
     <div className="search-app">
       <h1>Star Wars Search</h1>
-      <SearchBar
-        searchTerm={searchTerm}
-        onThrowError={throwError}
-        onSearchChange={(value: string) => setSearchTerm(value)}
-        onSearch={handleSearch}
-      />
-      <SearchResults
-        searchResults={searchResults}
-        error={error}
-        isLoading={isLoading}
-      />
+      <SearchTermContext.Provider value={searchTerm}>
+        <SearchBar
+          onThrowError={throwError}
+          onSearchChange={(value: string) => setSearchTerm(value)}
+          onSearch={handleSearch}
+        />
+      </SearchTermContext.Provider>
+      <ResultContext.Provider value={searchResults}>
+        <SearchResults error={error} isLoading={isLoading} />
+      </ResultContext.Provider>
       <Pagination
         currentPage={currentPage}
         onPageChange={handlePageChange}

@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import SearchTermContext from '../Contex api/SearchTermContext';
 
 interface SearchBarProps {
-  searchTerm: string;
   onSearchChange: (value: string) => void;
   onSearch: () => void;
   onThrowError: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
-  searchTerm,
   onSearchChange,
   onSearch,
   onThrowError,
 }) => {
+  const searchTerm = useContext(SearchTermContext);
   return (
     <div className="search-bar">
       <input

@@ -1,20 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ResultContext from '../Contex api/ResultContext';
 import { SearchResult } from '../types/types';
 
 interface SearchResultsProps {
-  searchResults: SearchResult[];
   error: string | null;
   isLoading: boolean;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({
-  searchResults,
-  error,
-  isLoading,
-}) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ error, isLoading }) => {
   const navigate = useNavigate();
-
+  const searchResults = useContext(ResultContext);
   const handleNavigate = (url: string) => {
     navigate(`detail/${url.match(/[0-9]+/g)?.join('')}`);
   };
