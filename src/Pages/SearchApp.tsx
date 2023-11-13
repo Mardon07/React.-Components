@@ -5,8 +5,8 @@ import Pagination from '../Components/Pagination';
 import { getSearchResults } from '../api/request';
 import { SearchResult } from '../types/types';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import ResultContext from '../Contex api/ResultContext';
-import SearchTermContext from '../Contex api/SearchTermContext';
+import ResultContext from '../ContexApi/ResultContext';
+import SearchTermContext from '../ContexApi/SearchTermContext';
 
 const SearchApp: React.FC = () => {
   const navigate = useNavigate();

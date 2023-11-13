@@ -29,13 +29,14 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="pagination">
+    <div data-testid="pagination" className="pagination">
       <button onClick={handlePrevPage}>Previous</button>
       <span>Page {currentPage}</span>
       <button onClick={handleNextPage}>Next</button>
+      <label htmlFor="page-select:id">Items per page</label>
       <select
-        name="page-select"
         id="page-select:id"
+        name="page-select"
         onChange={handleItemsPerPageChange}
       >
         <option value="10">10</option>

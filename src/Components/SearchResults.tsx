@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ResultContext from '../Contex api/ResultContext';
+import ResultContext from '../ContexApi/ResultContext';
 import { SearchResult } from '../types/types';
 
 interface SearchResultsProps {
@@ -15,19 +15,23 @@ const SearchResults: React.FC<SearchResultsProps> = ({ error, isLoading }) => {
     navigate(`detail/${url.match(/[0-9]+/g)?.join('')}`);
   };
   return (
-    <div className="search-results">
+    <div data-testid="search-results" className="search-results">
       {isLoading ? (
-        <div className="loader"></div>
+        <div data-testid="loader" className="loader"></div>
       ) : error ? (
         <div className="error-message">Error: {error}</div>
       ) : (
         <ul>
           {searchResults.map((result: SearchResult, index: number) => (
-            <li key={index} className="search-result">
+            <li
+              key={index}
+              data-testid="search-result"
+              className="search-result"
+            >
               <div>
                 {' '}
                 <div>
-                  <strong>{result.name}</strong>
+                  <strong data-testid="result-name">{result.name}</strong>
                 </div>
                 <div>Gender: {result.gender}</div>
                 <div>Height: {result.height}</div>

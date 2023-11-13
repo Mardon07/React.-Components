@@ -40,28 +40,33 @@ const Detail: React.FC = () => {
       closeDetail();
     }
   };
+
   return (
-    <>
-      <div onClick={(e) => handleClick(e)} className="detail-container-block">
-        <div className="detail-container">
-          {isLoading ? (
-            <div className="loader"></div>
-          ) : error ? (
-            <div className="error-message">Error: {error}</div>
-          ) : (
-            selectedResult && (
-              <div>
-                <h2>{selectedResult?.name}</h2>
-                <p>Gender: {selectedResult?.gender}</p>
-                <p>Height: {selectedResult?.height}</p>
-                <p>Skin Color: {selectedResult?.skin_color}</p>
-                <button onClick={closeDetail}>Close</button>
-              </div>
-            )
-          )}
-        </div>
+    <div
+      onClick={(e) => handleClick(e)}
+      data-testid="detail-container-block"
+      className="detail-container-block"
+    >
+      <div data-testid="detail-container" className="detail-container">
+        {isLoading ? (
+          <div data-testid="loader" className="loader"></div>
+        ) : error ? (
+          <div data-testid="error-message" className="error-message">
+            Error: {error}
+          </div>
+        ) : (
+          selectedResult && (
+            <div data-testid="selected-result">
+              <h2>{selectedResult?.name}</h2>
+              <p>Gender: {selectedResult?.gender}</p>
+              <p>Height: {selectedResult?.height}</p>
+              <p>Skin Color: {selectedResult?.skin_color}</p>
+              <button onClick={closeDetail}>Close</button>
+            </div>
+          )
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

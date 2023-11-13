@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import SearchTermContext from '../Contex api/SearchTermContext';
+import SearchTermContext from '../ContexApi/SearchTermContext';
 
 interface SearchBarProps {
   onSearchChange: (value: string) => void;
@@ -14,10 +14,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const searchTerm = useContext(SearchTermContext);
   return (
-    <div className="search-bar">
+    <div data-testid="search-bar" className="search-bar">
       <input
         type="text"
         value={searchTerm}
+        placeholder="Enter search term"
         onChange={(e) => onSearchChange(e.target.value.trim())}
       />
       <button onClick={onSearch}>Search</button>
