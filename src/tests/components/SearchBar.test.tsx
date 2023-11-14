@@ -12,7 +12,6 @@ describe('SearchBar Component', () => {
       />
     );
 
-    // Check if the buttons and input field are rendered
     expect(getByText('Search')).toBeInTheDocument();
     expect(getByText('Throw Error')).toBeInTheDocument();
     expect(getByPlaceholderText('Enter search term')).toBeInTheDocument();
@@ -28,12 +27,10 @@ describe('SearchBar Component', () => {
       />
     );
 
-    // Simulate user typing in the input field
     fireEvent.change(getByPlaceholderText('Enter search term'), {
       target: { value: 'Star Wars' },
     });
 
-    // Check if onSearchChange is called with the correct value
     expect(onSearchChangeMock).toHaveBeenCalledWith('Star Wars');
   });
 
@@ -47,10 +44,8 @@ describe('SearchBar Component', () => {
       />
     );
 
-    // Simulate user clicking the Search button
     fireEvent.click(getByText('Search'));
 
-    // Check if onSearch is called
     expect(onSearchMock).toHaveBeenCalled();
   });
 
@@ -64,10 +59,8 @@ describe('SearchBar Component', () => {
       />
     );
 
-    // Simulate user clicking the Throw Error button
     fireEvent.click(getByText('Throw Error'));
 
-    // Check if onThrowError is called
     expect(onThrowErrorMock).toHaveBeenCalled();
   });
 });

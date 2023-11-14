@@ -12,7 +12,6 @@ describe('Pagination Component', () => {
       />
     );
 
-    // Check if the buttons, page number, and items per page select are rendered
     expect(getByText('Previous')).toBeInTheDocument();
     expect(getByText('Next')).toBeInTheDocument();
     expect(getByText('Page 1')).toBeInTheDocument();
@@ -29,10 +28,8 @@ describe('Pagination Component', () => {
       />
     );
 
-    // Simulate user clicking the Next button
     fireEvent.click(getByText('Next'));
 
-    // Check if onPageChange is called with the correct page number
     expect(onPageChangeMock).toHaveBeenCalledWith(2);
   });
 
@@ -46,10 +43,8 @@ describe('Pagination Component', () => {
       />
     );
 
-    // Simulate user clicking the Previous button
     fireEvent.click(getByText('Previous'));
 
-    // Check if onPageChange is called with the correct page number
     expect(onPageChangeMock).toHaveBeenCalledWith(1);
   });
 
@@ -63,12 +58,10 @@ describe('Pagination Component', () => {
       />
     );
 
-    // Simulate user changing the items per page select
     fireEvent.change(getByLabelText('Items per page'), {
       target: { value: '20' },
     });
 
-    // Check if onItemsPerPageChange is called with the correct value
     expect(onItemsPerPageChangeMock).toHaveBeenCalledWith(20);
   });
 });

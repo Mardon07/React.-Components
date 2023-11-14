@@ -6,23 +6,19 @@ import { MemoryRouter } from 'react-router';
 import SearchApp from '../../Pages/SearchApp';
 import { act as domAct } from 'react-dom/test-utils';
 
-// Mock Axios
 const mockAxios = new MockAdapter(axios);
 
 beforeAll(() => {
-  // Mock Axios response for the default search request
   mockAxios
     .onGet('https://swapi.dev/api/people/?search')
     .reply(200, { results: [] });
 
-  // Mock Axios response for the search with a specific term
   mockAxios
     .onGet('https://swapi.dev/api/people/?search?term=Luke%20Skywalker')
     .reply(200, {
       results: [{ name: 'Luke Skywalker' }],
     });
 
-  // Mock Axios response for the search with an error
   mockAxios.onGet('https://swapi.dev/api/people/?search?term=Error').reply(500);
 });
 

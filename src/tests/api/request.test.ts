@@ -27,7 +27,7 @@ describe('getSearchResults', () => {
     const result = await getSearchResults(searchTerm, page);
 
     expect(fetchMock).toHaveBeenCalledWith(expectedUrl);
-    expect(result).toEqual({ results: mockResults, nextPage: undefined }); // Update here
+    expect(result).toEqual({ results: mockResults, nextPage: undefined });
   });
 
   it('handles errors when fetching search results', async () => {

@@ -31,12 +31,9 @@ describe('Detail Component', () => {
         </MemoryRouter>
       );
 
-      // Wait for the loading state to disappear
       await waitFor(() => {
         expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
       });
-
-      // Ensure details are rendered
     });
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     expect(screen.getByText('Gender: male')).toBeInTheDocument();
@@ -56,12 +53,9 @@ describe('Detail Component', () => {
         </MemoryRouter>
       );
 
-      // Wait for the component to handle the error
       await waitFor(() => {
         expect(mockedGetDetails).toHaveBeenCalledTimes(1);
       });
-
-      // Ensure error message is rendered
     });
     expect(screen.getByTestId('error-message')).toBeInTheDocument();
   });
