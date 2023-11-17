@@ -7,12 +7,17 @@ import { SearchResult } from '../types/types';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import ResultContext from '../ContexApi/ResultContext';
 import SearchTermContext from '../ContexApi/SearchTermContext';
+import type { RootState } from '../store/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPeoples } from '../store/slices/result.slice';
 
 const SearchApp: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const count = useSelector((state: RootState) => state.results.results);
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>(count);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(+id!);
@@ -23,7 +28,7 @@ const SearchApp: React.FC = () => {
     if (savedQuery) {
       setSearchTerm(savedQuery);
     }
-  }, []);
+  }, [dispatch, searchResults]);
 
   useEffect(() => {
     performAPICall(searchTerm, currentPage);
@@ -62,6 +67,8 @@ const SearchApp: React.FC = () => {
 
       setSearchResults(results.slice(0, itemsPerPage));
       setError(null);
+
+      dispatch(getPeoples(results.slice(0, itemsPerPage)));
     } catch (error) {
       setError('An error occurred');
       setSearchResults([]);
