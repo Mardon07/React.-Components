@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 import { render, fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import SearchBar from '../../Components/SearchBar';
+import { store } from '../../store/store';
 
 describe('SearchBar Component', () => {
   it('renders the SearchBar component', () => {
@@ -20,11 +22,13 @@ describe('SearchBar Component', () => {
   it('calls onSearchChange when the input value changes', () => {
     const onSearchChangeMock = jest.fn();
     const { getByPlaceholderText } = render(
-      <SearchBar
-        onSearchChange={onSearchChangeMock}
-        onSearch={() => {}}
-        onThrowError={() => {}}
-      />
+      <Provider store={store}>
+        <SearchBar
+          onSearchChange={onSearchChangeMock}
+          onSearch={() => {}}
+          onThrowError={() => {}}
+        />
+      </Provider>
     );
 
     fireEvent.change(getByPlaceholderText('Enter search term'), {
@@ -37,11 +41,13 @@ describe('SearchBar Component', () => {
   it('calls onSearch when the Search button is clicked', () => {
     const onSearchMock = jest.fn();
     const { getByText } = render(
-      <SearchBar
-        onSearchChange={() => {}}
-        onSearch={onSearchMock}
-        onThrowError={() => {}}
-      />
+      <Provider store={store}>
+        <SearchBar
+          onSearchChange={() => {}}
+          onSearch={onSearchMock}
+          onThrowError={() => {}}
+        />
+      </Provider>
     );
 
     fireEvent.click(getByText('Search'));
@@ -52,11 +58,13 @@ describe('SearchBar Component', () => {
   it('calls onThrowError when the Throw Error button is clicked', () => {
     const onThrowErrorMock = jest.fn();
     const { getByText } = render(
-      <SearchBar
-        onSearchChange={() => {}}
-        onSearch={() => {}}
-        onThrowError={onThrowErrorMock}
-      />
+      <Provider store={store}>
+        <SearchBar
+          onSearchChange={() => {}}
+          onSearch={() => {}}
+          onThrowError={onThrowErrorMock}
+        />
+      </Provider>
     );
 
     fireEvent.click(getByText('Throw Error'));

@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 import { render, fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import Pagination from '../../Components/Pagination';
+import { store } from '../../store/store';
 
 describe('Pagination Component', () => {
   it('renders the Pagination component with default values', () => {
@@ -21,11 +23,13 @@ describe('Pagination Component', () => {
   it('calls onPageChange when the Next button is clicked', () => {
     const onPageChangeMock = jest.fn();
     const { getByText } = render(
-      <Pagination
-        currentPage={1}
-        onPageChange={onPageChangeMock}
-        onItemsPerPageChange={() => {}}
-      />
+      <Provider store={store}>
+        <Pagination
+          currentPage={1}
+          onPageChange={onPageChangeMock}
+          onItemsPerPageChange={() => {}}
+        />
+      </Provider>
     );
 
     fireEvent.click(getByText('Next'));
@@ -36,11 +40,13 @@ describe('Pagination Component', () => {
   it('calls onPageChange when the Previous button is clicked', () => {
     const onPageChangeMock = jest.fn();
     const { getByText } = render(
-      <Pagination
-        currentPage={2}
-        onPageChange={onPageChangeMock}
-        onItemsPerPageChange={() => {}}
-      />
+      <Provider store={store}>
+        <Pagination
+          currentPage={2}
+          onPageChange={onPageChangeMock}
+          onItemsPerPageChange={() => {}}
+        />
+      </Provider>
     );
 
     fireEvent.click(getByText('Previous'));
@@ -51,11 +57,13 @@ describe('Pagination Component', () => {
   it('calls onItemsPerPageChange when the items per page select is changed', () => {
     const onItemsPerPageChangeMock = jest.fn();
     const { getByLabelText } = render(
-      <Pagination
-        currentPage={1}
-        onPageChange={() => {}}
-        onItemsPerPageChange={onItemsPerPageChangeMock}
-      />
+      <Provider store={store}>
+        <Pagination
+          currentPage={1}
+          onPageChange={() => {}}
+          onItemsPerPageChange={onItemsPerPageChangeMock}
+        />
+      </Provider>
     );
 
     fireEvent.change(getByLabelText('Items per page'), {

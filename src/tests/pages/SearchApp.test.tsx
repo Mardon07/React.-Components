@@ -5,6 +5,8 @@ import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router';
 import SearchApp from '../../Pages/SearchApp';
 import { act as domAct } from 'react-dom/test-utils';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
 
 const mockAxios = new MockAdapter(axios);
 
@@ -30,7 +32,9 @@ test('renders SearchApp component', async () => {
   await domAct(async () => {
     render(
       <MemoryRouter>
-        <SearchApp />
+        <Provider store={store}>
+          <SearchApp />
+        </Provider>
       </MemoryRouter>
     );
   });
@@ -42,7 +46,9 @@ test('renders SearchResult component', async () => {
   await domAct(async () => {
     render(
       <MemoryRouter>
-        <SearchApp />
+        <Provider store={store}>
+          <SearchApp />
+        </Provider>
       </MemoryRouter>
     );
   });
@@ -54,7 +60,9 @@ test('renders SearchBar component', async () => {
   await domAct(async () => {
     render(
       <MemoryRouter>
-        <SearchApp />
+        <Provider store={store}>
+          <SearchApp />
+        </Provider>
       </MemoryRouter>
     );
   });
@@ -66,7 +74,9 @@ test('renders Pagination component', async () => {
   await domAct(async () => {
     render(
       <MemoryRouter>
-        <SearchApp />
+        <Provider store={store}>
+          <SearchApp />
+        </Provider>
       </MemoryRouter>
     );
   });
