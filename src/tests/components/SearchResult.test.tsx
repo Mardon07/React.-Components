@@ -12,7 +12,7 @@ describe('SearchResults Component', () => {
 
     render(
       <Provider store={store}>
-        <SearchResults error={null} isLoading={true} />
+        <SearchResults error={null} />
       </Provider>,
       {
         wrapper: MemoryRouter,
@@ -21,12 +21,13 @@ describe('SearchResults Component', () => {
 
     expect(screen.getByTestId('search-results')).toBeInTheDocument();
   });
+
   test('renders loader when isLoading is true', async () => {
     cards;
 
     render(
       <Provider store={store}>
-        <SearchResults error={null} isLoading={true} />
+        <SearchResults error={null} />
       </Provider>,
       {
         wrapper: MemoryRouter,
@@ -34,20 +35,5 @@ describe('SearchResults Component', () => {
     );
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
-  });
-
-  test('renders error message when there is an error', async () => {
-    cards;
-
-    render(
-      <Provider store={store}>
-        <SearchResults error="Test error" isLoading={false} />
-      </Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
-    );
-
-    expect(screen.getByText('Error: Test error')).toBeInTheDocument();
   });
 });

@@ -9,7 +9,7 @@ import Detail from './Pages/Detail';
 import RootLayout from './Pages/RootLayout';
 import SearchApp from './Pages/SearchApp';
 
-const router = createBrowserRouter(
+export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route path="page/:id" element={<SearchApp />}>

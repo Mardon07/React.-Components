@@ -9,3 +9,9 @@ export interface SearchResult {
   eye_color?: string;
   birth_year?: string;
 }
+
+export interface Data {
+  next: string | null;
+  previous: string | null;
+  results: SearchResult[];
+}

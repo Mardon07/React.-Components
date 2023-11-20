@@ -29,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div data-testid="pagination" className="pagination">
+    <div data-testid="pagination" className="pagination" role="navigation">
       <button onClick={handlePrevPage}>Previous</button>
       <span>Page {currentPage}</span>
       <button onClick={handleNextPage}>Next</button>

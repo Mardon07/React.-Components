@@ -1,35 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDetails } from '../api/request';
-import { SearchResult } from '../types/types';
-
+import { useGetDetailsQuery } from '../store/api/apiSlices';
 const Detail: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
-    null
-  );
+  const {
+    data: selectedResult,
+    isLoading,
+    error,
+  } = useGetDetailsQuery(id ? id : '1');
 
-  const handleItemClick = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const response = await getDetails(id!);
-      setSelectedResult(response);
-    } catch (error) {
-      setError('An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id]);
-  useEffect(() => {
-    handleItemClick();
-  }, [handleItemClick]);
   const closeDetail = () => {
-    setSelectedResult(null);
-
     navigate(-1);
   };
 
@@ -52,7 +34,7 @@ const Detail: React.FC = () => {
           <div data-testid="loader" className="loader"></div>
         ) : error ? (
           <div data-testid="error-message" className="error-message">
-            Error: {error}
+            Error: {error && 'An error occurred'}
           </div>
         ) : (
           selectedResult && (

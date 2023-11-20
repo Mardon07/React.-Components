@@ -1,16 +1,21 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import ResultContext from '../ContexApi/ResultContext';
+import { RootState } from '../store/store';
 import { SearchResult } from '../types/types';
 
 interface SearchResultsProps {
   error: string | null;
-  isLoading: boolean;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ error, isLoading }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ error }) => {
   const navigate = useNavigate();
-  const searchResults = useContext(ResultContext);
+  const isLoading = useSelector((state: RootState) => state.results.loading);
+
+  const searchResults = useSelector(
+    (state: RootState) => state.results.results
+  );
+
   const handleNavigate = (url: string) => {
     navigate(`detail/${url.match(/[0-9]+/g)?.join('')}`);
   };
@@ -19,7 +24,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({ error, isLoading }) => {
       {isLoading ? (
         <div data-testid="loader" className="loader"></div>
       ) : error ? (
-        <div className="error-message">Error: {error}</div>
+        <div data-testid="error-message" className="error-message">
+          Error: {error}
+        </div>
       ) : (
         <ul>
           {searchResults.map((result: SearchResult, index: number) => (

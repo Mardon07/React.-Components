@@ -1,10 +1,9 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router';
 import SearchApp from '../../Pages/SearchApp';
-import { act as domAct } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { store } from '../../store/store';
 
@@ -29,7 +28,7 @@ afterEach(() => {
 });
 
 test('renders SearchApp component', async () => {
-  await domAct(async () => {
+  await act(async () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
@@ -43,7 +42,7 @@ test('renders SearchApp component', async () => {
 });
 
 test('renders SearchResult component', async () => {
-  await domAct(async () => {
+  await act(async () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
@@ -57,7 +56,7 @@ test('renders SearchResult component', async () => {
 });
 
 test('renders SearchBar component', async () => {
-  await domAct(async () => {
+  await act(async () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
@@ -71,7 +70,7 @@ test('renders SearchBar component', async () => {
 });
 
 test('renders Pagination component', async () => {
-  await domAct(async () => {
+  await act(async () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
@@ -81,5 +80,5 @@ test('renders Pagination component', async () => {
     );
   });
 
-  expect(screen.getByTestId('pagination')).toBeInTheDocument();
+  expect(screen.getByRole('navigation')).toBeInTheDocument();
 });

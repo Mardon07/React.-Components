@@ -24,7 +24,7 @@ describe('getSearchResults', () => {
       searchTerm
     )}&page=${page}`;
 
-    const result = await getSearchResults(searchTerm, page);
+    const result = await getSearchResults(searchTerm, page, 10);
 
     expect(fetchMock).toHaveBeenCalledWith(expectedUrl);
     expect(result).toEqual({ results: mockResults, nextPage: undefined });
@@ -36,7 +36,7 @@ describe('getSearchResults', () => {
     const searchTerm = 'Skywalker';
     const page = 1;
 
-    await expect(getSearchResults(searchTerm, page)).rejects.toThrow(
+    await expect(getSearchResults(searchTerm, page, 10)).rejects.toThrow(
       'Failed to fetch data'
     );
   });

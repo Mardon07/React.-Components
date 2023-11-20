@@ -4,10 +4,12 @@ import { SearchResult } from '../../types/types';
 
 export interface CounterState {
   results: SearchResult[];
+  loading: boolean;
 }
 
 const initialState: CounterState = {
   results: [],
+  loading: true,
 };
 
 export const counterSlice = createSlice({
@@ -17,10 +19,12 @@ export const counterSlice = createSlice({
     getPeoples: (state, action: PayloadAction<SearchResult[]>) => {
       state.results = action.payload;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { getPeoples } = counterSlice.actions;
+export const { getPeoples, setLoading } = counterSlice.actions;
 
 export default counterSlice.reducer;
