@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "next dev",
+    "build": "next build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix --color",
     "preview": "vite preview",
     "format:fix": "prettier . --write",
@@ -25,28 +25,29 @@
     "history": "^5.3.0",
     "husky": "^8.0.3",
     "msw": "^2.0.5",
+    "next": "^14.0.3",
     "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.1.3",
-    "react-router-dom": "^6.18.0",
-    "vitest": "^0.34.6"
+    "react-redux": "^8.1.3"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.23.3",
+    "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.0",
-    "@types/jest": "^29.5.8",
+    "@types/jest": "^29.5.10",
+    "@types/mocha": "^10.0.6",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/testing-library__jest-dom": "^6.0.0",
     "@types/testing-library__react": "^10.2.0",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
-    "@vitejs/plugin-react": "^4.0.3",
     "axios-mock-adapter": "^1.22.0",
+    "babel-jest": "^29.7.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "gh-pages": "^6.0.0",
     "husky": "^8.0.0",
     "istanbul-lib-coverage": "^3.2.2",
     "istanbul-lib-instrument": "^6.0.1",
@@ -57,8 +58,10 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "^3.0.3",
     "jest-junit": "^16.0.0",
+    "jest-next-dynamic": "^1.0.1",
     "lint-staged": "^15.0.2",
     "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   },
@@ -69,7 +72,7 @@
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     },
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest"
     },
     "setupFiles": [
       "<rootDir>/src/polyfills.ts"

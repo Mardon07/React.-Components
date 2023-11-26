@@ -1,12 +1,15 @@
 import '@testing-library/jest-dom';
-import { render, screen, act } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import { MemoryRouter } from 'react-router';
-import SearchApp from '../../Pages/SearchApp';
+import MockAdapter from 'axios-mock-adapter'; // Используйте правильный путь
 import { Provider } from 'react-redux';
-import { store } from '../../store/store';
+import { store } from '../../src/store/store';
+import SearchApp from '../../Components/SearchApp';
+import React from 'react';
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 const mockAxios = new MockAdapter(axios);
 
 beforeAll(() => {
@@ -30,11 +33,9 @@ afterEach(() => {
 test('renders SearchApp component', async () => {
   await act(async () => {
     render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <SearchApp />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={store}>
+        <SearchApp />
+      </Provider>
     );
   });
 
@@ -44,11 +45,9 @@ test('renders SearchApp component', async () => {
 test('renders SearchResult component', async () => {
   await act(async () => {
     render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <SearchApp />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={store}>
+        <SearchApp />
+      </Provider>
     );
   });
 
@@ -58,11 +57,9 @@ test('renders SearchResult component', async () => {
 test('renders SearchBar component', async () => {
   await act(async () => {
     render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <SearchApp />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={store}>
+        <SearchApp />
+      </Provider>
     );
   });
 
@@ -72,11 +69,9 @@ test('renders SearchBar component', async () => {
 test('renders Pagination component', async () => {
   await act(async () => {
     render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <SearchApp />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={store}>
+        <SearchApp />
+      </Provider>
     );
   });
 

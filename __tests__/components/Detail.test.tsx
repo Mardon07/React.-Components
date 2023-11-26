@@ -1,12 +1,15 @@
 import '@testing-library/jest-dom';
 import { act, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
-import { getDetails } from '../../api/request';
-import Detail from '../../Pages/Detail';
-import { store } from '../../store/store';
+import { getDetails } from '../../pages/api/request';
+import Detail from '../../Components/Detail';
+import { store } from '../../src/store/store';
+import React from 'react';
 
-jest.mock('../../api/request');
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
+jest.mock('../../pages/api/request');
 
 const mockedGetDetails = getDetails as jest.MockedFunction<typeof getDetails>;
 
@@ -19,9 +22,7 @@ describe('Detail Component', () => {
     await act(async () => {
       render(
         <Provider store={store}>
-          <MemoryRouter>
-            <Detail />
-          </MemoryRouter>
+          <Detail />
         </Provider>
       );
     });

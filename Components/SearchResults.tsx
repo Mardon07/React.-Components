@@ -1,23 +1,27 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../store/store';
-import { SearchResult } from '../types/types';
+import { RootState } from '../src/store/store';
+import { SearchResult } from '../src/types/types';
 
 interface SearchResultsProps {
   error: string | null;
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({ error }) => {
-  const navigate = useNavigate();
   const isLoading = useSelector((state: RootState) => state.results.loading);
+  const router = useRouter();
 
   const searchResults = useSelector(
     (state: RootState) => state.results.results
   );
 
   const handleNavigate = (url: string) => {
-    navigate(`detail/${url.match(/[0-9]+/g)?.join('')}`);
+    router.push(
+      `${router.asPath !== '/' ? router.asPath : 'page/1'}/detail/${url
+        .match(/[0-9]+/g)
+        ?.join('')}`
+    );
   };
   return (
     <div data-testid="search-results" className="search-results">

@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 import Pagination from '../../Components/Pagination';
-import { store } from '../../store/store';
+import { store } from '../../src/store/store';
 
 describe('Pagination Component', () => {
   it('renders the Pagination component with default values', () => {

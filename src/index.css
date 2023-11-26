@@ -161,7 +161,7 @@ body {
 }
 
 .detail-container {
-  position: absolute;
+  position: fixed;
   right: 10%;
   top: 30vh;
   width: 30%;
@@ -186,9 +186,9 @@ body {
   background-color: #dc3545;
   color: #fff;
 }
-.main-data-container {
+/* .main-data-container {
   position: fixed;
   left: 0;
   top: 0;
   display: block;
-}
+} */

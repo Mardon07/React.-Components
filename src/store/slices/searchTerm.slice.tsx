@@ -3,10 +3,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface CounterState {
   term: string;
+  page: number;
 }
-
 const initialState: CounterState = {
-  term: localStorage.getItem('searchQuery') || '',
+  term:
+    (typeof window !== 'undefined' && localStorage.getItem('searchQuery')) ||
+    '',
+  page: 1,
 };
 
 export const counterSlice = createSlice({
@@ -15,6 +18,9 @@ export const counterSlice = createSlice({
   reducers: {
     getSearchTerm: (state, action: PayloadAction<string>) => {
       state.term = action.payload;
+    },
+    getCurrentPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
     },
   },
 });

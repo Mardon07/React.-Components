@@ -8,22 +8,42 @@
     "typeRoots": ["node_modules/@types"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"],
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "incremental": true
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jest-environment-jsdom"
   },
   "include": [
+    "Components/**/*.tsx",
     "src",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.test.ts",
-    "src/**/*.test.tsx"
+    "src/**/*.test.tsx",
+    "pages",
+    "Components",
+    "Components/mocks",
+    "__tests__/components/Pagination.test.tsx",
+    "__tests__/components/SearchBar.test.tsx",
+    "__tests__/components/SearchResult.test.tsx",
+    "__tests__/components/Detail.test.tsx",
+    "__tests__/components/SearchApp.test.tsx",
+    "__tests__/api/request.test.ts"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "exclude": ["node_modules"]
 }

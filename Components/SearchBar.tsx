@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '../store/slices/result.slice';
-import { getSearchTerm } from '../store/slices/searchTerm.slice';
-import { RootState } from '../store/store';
+import { setLoading } from '../src/store/slices/result.slice';
+import { getSearchTerm } from '../src/store/slices/searchTerm.slice';
+import { RootState } from '../src/store/store';
 
 interface SearchBarProps {
   onThrowError: () => void;

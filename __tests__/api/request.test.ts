@@ -1,6 +1,6 @@
 import fetchMock from 'jest-fetch-mock';
-import { getDetails, getSearchResults } from '../../api/request';
-import { cards } from '../mocks/cards';
+import { cards } from '../../Components/mocks/cards';
+import { getDetails, getSearchResults } from '../../pages/api/request';
 
 beforeEach(() => {
   fetchMock.resetMocks();

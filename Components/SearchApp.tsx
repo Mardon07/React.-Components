@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from '../Components/SearchBar';
-import SearchResults from '../Components/SearchResults';
-import Pagination from '../Components/Pagination';
-import { getSearchResults } from '../api/request';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import type { RootState } from '../store/store';
+import SearchBar from './SearchBar';
+import SearchResults from './SearchResults';
+import Pagination from './Pagination';
+import { getSearchResults } from '../pages/api/request';
+import type { RootState } from '../src/store/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPeoples, setLoading } from '../store/slices/result.slice';
-import { useGetSearchResultsQuery } from '../store/api/apiSlices';
+import { getPeoples, setLoading } from '../src/store/slices/result.slice';
+import { useGetSearchResultsQuery } from '../src/store/api/apiSlices';
+import { useRouter } from 'next/router';
 
-const SearchApp: React.FC = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
+interface SearchAppProps {
+  children?: React.ReactNode;
+}
+const SearchApp: React.FC<SearchAppProps> = ({ children }) => {
+  const router = useRouter();
 
   const term = useSelector((state: RootState) => state.searchTerm.term);
 
-  const [currentPage, setCurrentPage] = useState<number>(+id!);
-  const { data: results } = useGetSearchResultsQuery({
-    searchTerm: term,
-    page: currentPage,
-  });
+  const [currentPage, setCurrentPage] = useState<number>(
+    router?.query?.id ? +router.query.id : 1
+  );
 
   const dispatch = useDispatch();
   const [error, setError] = useState<string | null>(null);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-
+  const { data: results } = useGetSearchResultsQuery({
+    searchTerm: term,
+    page: currentPage,
+  });
   useEffect(() => {
     results && dispatch(getPeoples(results?.results));
     dispatch(setLoading(false));
@@ -56,7 +59,7 @@ const SearchApp: React.FC = () => {
   };
 
   const handlePageChange = (page: number) => {
-    navigate(`/page/${page}`);
+    router.push(`/page/${page}`);
     setCurrentPage(page);
     dispatch(setLoading(true));
   };
@@ -70,22 +73,22 @@ const SearchApp: React.FC = () => {
   };
 
   return (
-    <div className="search-app">
-      <h1>Star Wars Search</h1>
+    <>
+      <div className="search-app">
+        <div>
+          <h1>Star Wars Search</h1>
 
-      <div>
-        <SearchBar onThrowError={throwError} />
-        <SearchResults error={error} />
-        <Pagination
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          onItemsPerPageChange={handleItemsPerPageChange}
-        />
-        <main className="main-data-container">
-          <Outlet />
-        </main>
+          <SearchBar onThrowError={throwError} />
+          <SearchResults error={error} />
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+          />
+        </div>
+        <main className="main-data-container">{children}</main>
       </div>
-    </div>
+    </>
   );
 };
 

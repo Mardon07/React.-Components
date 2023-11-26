@@ -1,31 +1,22 @@
+import { useRouter } from 'next/router';
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useGetDetailsQuery } from '../store/api/apiSlices';
+import { useGetDetailsQuery } from '../src/store/api/apiSlices';
+
 const Detail: React.FC = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const {
     data: selectedResult,
     isLoading,
     error,
-  } = useGetDetailsQuery(id ? id : '1');
+  } = useGetDetailsQuery(router?.query ? String(router.query.detailId) : '1');
 
   const closeDetail = () => {
-    navigate(-1);
-  };
-
-  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const eventTarget = event.target as HTMLElement;
-
-    if (eventTarget.className === 'detail-container-block') {
-      closeDetail();
-    }
+    router.back();
   };
 
   return (
     <div
-      onClick={(e) => handleClick(e)}
       data-testid="detail-container-block"
       className="detail-container-block"
     >

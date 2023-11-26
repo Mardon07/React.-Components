@@ -1,11 +1,14 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { cards } from '../mocks/cards';
-import SearchResults from '../../Components/SearchResults';
+import { cards } from '../../Components/mocks/cards';
 import { Provider } from 'react-redux';
-import { store } from '../../store/store';
+import { store } from '../../src/store/store';
+import SearchResults from '../../Components/SearchResults';
+import React from 'react';
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 describe('SearchResults Component', () => {
   test('renders search-results', async () => {
     cards;
@@ -13,10 +16,7 @@ describe('SearchResults Component', () => {
     render(
       <Provider store={store}>
         <SearchResults error={null} />
-      </Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
+      </Provider>
     );
 
     expect(screen.getByTestId('search-results')).toBeInTheDocument();
@@ -28,10 +28,7 @@ describe('SearchResults Component', () => {
     render(
       <Provider store={store}>
         <SearchResults error={null} />
-      </Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
+      </Provider>
     );
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();

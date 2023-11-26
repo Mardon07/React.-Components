@@ -1,4 +1,4 @@
-import { SearchResult } from '../../types/types';
+import { SearchResult } from '../../src/types/types';
 
 export const cards: SearchResult[] = [
   {
