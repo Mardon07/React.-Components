@@ -41,7 +41,6 @@ export default function UncontrollForm() {
       picture: pictureRef.current?.files?.[0] || null,
       country: countryRef.current?.value || '',
     };
-    console.log(formData);
 
     try {
       await validationSchema.validate(formData, { abortEarly: false });
@@ -63,7 +62,6 @@ export default function UncontrollForm() {
           newErrors[error.path!] = error.message;
         });
         setErrors(newErrors);
-        console.log(errors);
       }
     }
   };
