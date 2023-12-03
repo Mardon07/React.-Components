@@ -1,27 +1,45 @@
-import * as React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { RootState } from '../store';
 
-export interface IHomeProps {}
+const Home: React.FC = () => {
+  const data = useSelector((state: RootState) => state.form.data);
 
-export default function Home() {
   return (
-    <>
-      <header>
+    <div className="home-container">
+      <div className="navigation">
+        <h1>Main Page</h1>
         <nav>
           <ul>
             <li>
-              <NavLink to="form-1">Form 1</NavLink>
+              <NavLink to="/">Main</NavLink>
             </li>
             <li>
-              <NavLink to="form-2">Form 2</NavLink>
+              <NavLink to="/uncontrolled">Uncontrolled Form</NavLink>
+            </li>
+            <li>
+              <NavLink to="/reacthookform">React Hook Form</NavLink>
             </li>
           </ul>
         </nav>
-      </header>
-
-      <main>
-        <Outlet />
-      </main>
-    </>
+      </div>
+      {data && (
+        <main className="main-content">
+          <div className="info-item">Name: {data.name}</div>
+          <div className="info-item">Age: {data.age}</div>
+          <div className="info-item">Email: {data.email}</div>
+          <div className="info-item">Password: {data.password}</div>
+          <div className="info-item">Country: {data.country}</div>
+          <div className="info-item">Gender: {data.gender}</div>
+          <div className="info-item picture">
+            <span>Picture:</span>
+            <img src={`data:image/png;base64,${data.picture}`} alt="" />
+          </div>
+        </main>
+      )}
+    </div>
   );
-}
+};
+
+export default Home;
