@@ -28,14 +28,12 @@ export const validationSchema = Yup.object().shape({
     .test(
       'fileSize',
       'File size is too large',
-      (value) => !!value && value[0]?.size <= 1024 * 1024
+      (value) => value && value?.size <= 1024 * 1024
     )
     .test(
       'fileType',
       'Invalid file type',
-      (value) =>
-        value &&
-        ['image/jpeg', 'image/png'].includes((value as FileList)[0]?.type)
+      (value) => value && ['image/jpeg', 'image/png'].includes(value?.type)
     ),
   country: Yup.string().required('Country is required'),
 });

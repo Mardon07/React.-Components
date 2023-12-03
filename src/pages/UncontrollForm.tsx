@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
+import { RootState } from '../store';
 import { getData } from '../store/form/formSlice';
-import { validationSchema } from '../validation';
+import { validationSchema } from '../validation/uncontrolValidate';
 export interface IUncontrollFormProps {}
 
 export default function UncontrollForm() {
+  const data = useSelector((state: RootState) => state.country.countries);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const nameRef = useRef<HTMLInputElement>(null);
@@ -15,13 +17,13 @@ export default function UncontrollForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const genderRef = useRef<HTMLInputElement>(null);
+  const maleRadioRef = useRef<HTMLInputElement>(null);
+  const femaleRadioRef = useRef<HTMLInputElement>(null);
   const acceptTermsRef = useRef<HTMLInputElement>(null);
   const pictureRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLSelectElement>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const formData = {
@@ -30,37 +32,40 @@ export default function UncontrollForm() {
       email: emailRef.current?.value || '',
       password: passwordRef.current?.value || '',
       confirmPassword: confirmPasswordRef.current?.value || '',
-      gender: genderRef.current?.value || '',
+      gender: maleRadioRef.current?.checked
+        ? maleRadioRef.current?.value
+        : femaleRadioRef.current?.checked
+        ? femaleRadioRef.current.value
+        : '',
       acceptTerms: acceptTermsRef.current?.checked || false,
+      picture: pictureRef.current?.files?.[0] || null,
       country: countryRef.current?.value || '',
     };
-
-    const file = pictureRef.current?.files?.[0];
-    if (file) {
-      const fileReader = new FileReader();
-      fileReader.onloadend = () => {
-        const base64String = fileReader.result?.toString().split(',')[1];
-        dispatch(getData({ ...formData, picture: base64String }));
-      };
-      fileReader.readAsDataURL(file);
-    }
-    navigate('/');
     console.log(formData);
 
-    validationSchema
-      .validate(formData, { abortEarly: false })
-      .then(() => {
-        setErrors({});
-      })
-      .catch((validationErrors: Yup.ValidationError | undefined) => {
-        if (validationErrors && validationErrors.inner) {
-          const newErrors: Record<string, string> = {};
-          validationErrors.inner.forEach((error) => {
-            newErrors[error.path!] = error.message;
-          });
-          setErrors(newErrors);
-        }
-      });
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      const file = pictureRef.current?.files?.[0];
+      if (file) {
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+          const base64String = fileReader.result?.toString().split(',')[1];
+          dispatch(getData({ ...formData, picture: base64String }));
+        };
+        fileReader.readAsDataURL(file!);
+      }
+      navigate('/');
+    } catch (validationErrors) {
+      if (Yup.ValidationError.isError(validationErrors)) {
+        const newErrors: Record<string, string> = {};
+        validationErrors.inner.forEach((error) => {
+          newErrors[error.path!] = error.message;
+        });
+        setErrors(newErrors);
+        console.log(errors);
+      }
+    }
   };
 
   return (
@@ -102,10 +107,16 @@ export default function UncontrollForm() {
       <div>
         <label>Gender:</label>
         <label>
-          <input type="radio" name="gender" value="male" ref={genderRef} /> Male
+          <input type="radio" name="gender" value="male" ref={maleRadioRef} />{' '}
+          Male
         </label>
         <label>
-          <input type="radio" name="gender" value="female" ref={genderRef} />{' '}
+          <input
+            type="radio"
+            name="gender"
+            value="female"
+            ref={femaleRadioRef}
+          />
           Female
         </label>
         {errors.gender && <span style={{ color: 'red' }}>{errors.gender}</span>}
@@ -123,7 +134,7 @@ export default function UncontrollForm() {
 
       <div>
         <label htmlFor="picture">Upload Picture:</label>
-        <input type="file" id="picture" accept=".png, .jpeg" ref={pictureRef} />
+        <input type="file" ref={pictureRef} />
         {errors.picture && (
           <span style={{ color: 'red' }}>{errors.picture}</span>
         )}
@@ -132,11 +143,12 @@ export default function UncontrollForm() {
       <div>
         <label htmlFor="country">Country:</label>
         <select id="country" ref={countryRef}>
-          {/* You need to map over your countries data from the Redux store here */}
           <option value="">Select Country</option>
-          <option value="country1">Country 1</option>
-          <option value="country2">Country 2</option>
-          {/* ... other countries ... */}
+          {data.map((elem, index) => (
+            <option key={index} value={elem.name}>
+              {elem.name}
+            </option>
+          ))}
         </select>
         {errors.country && (
           <span style={{ color: 'red' }}>{errors.country}</span>
@@ -144,16 +156,6 @@ export default function UncontrollForm() {
       </div>
 
       <button type="submit">Submit</button>
-      {Object.keys(errors).length > 0 && (
-        <div style={{ color: 'red', marginTop: '10px' }}>
-          <p>Please fix the following errors before submitting the form:</p>
-          <ul>
-            {Object.values(errors).map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
     </form>
   );
 }

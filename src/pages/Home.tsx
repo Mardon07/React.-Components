@@ -24,7 +24,7 @@ const Home: React.FC = () => {
           </ul>
         </nav>
       </div>
-      {data && (
+      {data.name && (
         <main className="main-content">
           <div className="info-item">Name: {data.name}</div>
           <div className="info-item">Age: {data.age}</div>

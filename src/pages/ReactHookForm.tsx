@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from '../validation';
 import { FormData, getData } from '../store/form/formSlice';
 import { useNavigate } from 'react-router';
+import { RootState } from '../store';
 export interface IReactHookFormProps {}
 
 interface Data {
@@ -21,6 +22,7 @@ interface Data {
 }
 
 export default function ReactHookForm() {
+  const data = useSelector((state: RootState) => state.country.countries);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -29,8 +31,8 @@ export default function ReactHookForm() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
+    mode: 'all',
   });
-
   const onSubmit: SubmitHandler<Data> = (data) => {
     const pictureFile = data.picture?.[0];
 
@@ -112,7 +114,12 @@ export default function ReactHookForm() {
 
       <div>
         <label htmlFor="picture">Upload Picture:</label>
-        <input type="file" {...register('picture')} />
+        <input
+          type="file"
+          {...register('picture')}
+          id="picture"
+          accept=".png, .jpeg"
+        />
         {errors.picture && (
           <span style={{ color: 'red' }}>{errors.picture.message}</span>
         )}
@@ -121,29 +128,21 @@ export default function ReactHookForm() {
       <div>
         <label htmlFor="country">Country:</label>
         <select id="country" {...register('country')}>
-          {/* You need to map over your countries data from the Redux store here */}
           <option value="">Select Country</option>
-          <option value="country1">Country 1</option>
-          <option value="country2">Country 2</option>
-          {/* ... other countries ... */}
+          {data.map((elem, index) => (
+            <option key={index} value={elem.name}>
+              {elem.name}
+            </option>
+          ))}
         </select>
         {errors.country && (
           <span style={{ color: 'red' }}>{errors.country.message}</span>
         )}
       </div>
 
-      <button type="submit">Submit</button>
-
-      {Object.keys(errors).length > 0 && (
-        <div style={{ color: 'red', marginTop: '10px' }}>
-          <p>Please fix the following errors before submitting the form:</p>
-          <ul>
-            {Object.values(errors).map((error, index) => (
-              <li key={index}>{error.message}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <button disabled={Object.keys(errors).length > 0} type="submit">
+        Submit
+      </button>
     </form>
   );
 }

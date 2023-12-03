@@ -7,7 +7,7 @@ export interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
-  gender: string;
+  gender: string | undefined;
   acceptTerms: boolean | undefined;
   picture?: string | ArrayBuffer | undefined;
   country: string;
